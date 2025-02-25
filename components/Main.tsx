@@ -1,10 +1,11 @@
+import { Link } from 'expo-router';
 import { useState, useEffect } from 'react';
-import { ActivityIndicator, View, FlatList } from 'react-native';
+import { ActivityIndicator, View, FlatList, Pressable, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AnimatedCharacterCard } from './CharacterCard';
-import { TopHeader } from './TopHeader';
 import { Character, getCharacters } from '../lib/rickAndMortyAPI';
+import { AntDesign } from '@expo/vector-icons';
 
 export function Main() {
   const insets = useSafeAreaInsets();
@@ -17,7 +18,12 @@ export function Main() {
 
   return (
     <View style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
-      <TopHeader />
+      <Link asChild href="/about">
+        <Pressable className="mb-2 flex-row items-center justify-center">
+          <AntDesign name="idcard" size={24} color="black" />
+          <Text className="ml-4 text-2xl">Ir al About</Text>
+        </Pressable>
+      </Link>
       {characters.length === 0 ? (
         <ActivityIndicator size="large" color="orange" />
       ) : (

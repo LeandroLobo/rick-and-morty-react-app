@@ -18,7 +18,7 @@ interface SidebarMenuProps {
 const menuItems: MenuItem[] = [
   { title: 'Home', path: '/', icon: 'home' },
   { title: 'App Info', path: '/about', icon: 'info' },
-  { title: 'Page 1', path: '/page1', icon: 'file' },
+  { title: 'Page 1 titulo muy muy largo', path: '/page1', icon: 'file' },
   { title: 'Page 2', path: '/page2', icon: 'book' },
   { title: 'Page 3', path: '/page3', icon: 'trash' },
   // Agrega más elementos aquí
@@ -45,9 +45,9 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
     <TouchableOpacity onPress={() => navigateTo(item.path)} className="mb-3 flex-row items-center">
       <View className="w-6 items-center">
         {/* Icono dinámico de FontAwesome */}
-        <FontAwesome name={item.icon as any} size={18} color="white" />
+        <FontAwesome name={item.icon as any} size={20} color="white" />
       </View>
-      <Text className="ml-4 font-bold text-white">{item.title}</Text>
+      <Text className="ml-4 text-xl font-bold text-white">{item.title}</Text>
     </TouchableOpacity>
   );
 
@@ -55,8 +55,8 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
     <View className="absolute left-0 top-0 h-full w-full flex-row">
       <Animated.View
         style={{ transform: [{ translateX: slideAnim }] }}
-        className="h-full w-64 bg-orange-500 p-5 shadow-lg">
-        <Text className="mb-4 text-lg font-bold text-white">Pages List</Text>
+        className="h-full w-72 bg-orange-500 p-5 shadow-lg">
+        <Text className="mb-4 text-3xl font-bold text-white">Pages List</Text>
 
         {/* FlatList para manejo eficiente de una lista larga */}
         <FlatList

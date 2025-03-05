@@ -9,12 +9,25 @@ export interface Character {
   species: string;
   gender: string;
   image: string;
+  episode: string[]; // Array de URLs
+  episodeNumber: string;
 }
 
+export interface Episode {
+  id: number;
+  name: string;
+  air_date: string;
+  episode: string;
+  characters: string[]; // Array de URLs
+  url: string;
+  created: string;
+}
+//"https://rickandmortyapi.com/api/episode/1"
 export async function getCharacters(id?: number): Promise<Character[]> {
   const response = await fetch(characters + (id ? `/${id}` : ''));
   const data = await response.json();
   return data.results.map((character: any): Character => {
+    const episodeNumber = character.episode[0].split('/').pop() || '';
     return {
       id: character.id,
       name: character.name,
@@ -22,6 +35,8 @@ export async function getCharacters(id?: number): Promise<Character[]> {
       species: character.species,
       gender: character.gender,
       image: character.image,
+      episodeNumber,
+      episode: character.episode,
     };
   });
 }

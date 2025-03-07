@@ -47,10 +47,6 @@ export function CharacterCard({ character }: CharacterCardProps) {
     }
   }, [character.episode]);
 
-  const googleSearchUrl = episode
-    ? `https://www.google.com/search?q=${encodeURIComponent('Rick and Morty Episode ' + character.episodeNumber + ', ' + episode.name)}`
-    : '#';
-
   return (
     <Link
       asChild

@@ -1,13 +1,22 @@
 import { FontAwesome } from '@expo/vector-icons';
 import SidebarMenu from 'components/SidebarMenu';
 import { TopHeaderLogo } from 'components/TopHeaderLogo';
-import { Stack } from 'expo-router';
-import { useState } from 'react';
+import { SplashScreen, Stack } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { TouchableOpacity, View, Text } from 'react-native';
 import '../global.css';
 
 export default function Layout() {
   const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync(); // Evita que se oculte automáticamente
+      setTimeout(async () => {
+        await SplashScreen.hideAsync(); // Oculta la splash después de 2 segundos
+      }, 2000);
+    }
+    prepare();
+  }, []);
   return (
     <View className="center flex-1">
       <Stack

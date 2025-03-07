@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "my-expo-app",
-    "slug": "my-expo-app",
+    "name": "rick-and-morty-wiki",
+    "slug": "rick-and-morty-wiki",
     "version": "1.0.0",
     "web": {
       "favicon": "./assets/favicon.png"
@@ -15,7 +15,7 @@
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/rick-and-morty-splash.jpg",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
@@ -26,7 +26,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.rickandmortywiki"
     }
   }
 }

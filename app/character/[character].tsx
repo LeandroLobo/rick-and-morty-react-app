@@ -1,11 +1,19 @@
-import { Link, Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 import { Text, View } from 'react-native';
+import { WebView } from 'react-native-webview';
 
 export default function CharacterDetail() {
   const { id, name } = useLocalSearchParams();
+  const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent('Rick and Morty Character: ' + name)}`;
 
   return (
-    <View className="flex-1 items-center justify-center">
+    <View
+      style={{
+        flex: 1,
+        padding: 16,
+        backgroundColor: '#f97316',
+        overflow: 'hidden',
+      }}>
       <Stack.Screen
         options={{
           headerStyle: {
@@ -17,9 +25,14 @@ export default function CharacterDetail() {
           headerTitle: String(name),
         }}
       />
-      <Text className="text-3xl">Character Detail</Text>
-      <Text>Name: {name}</Text>
-      <Text>ID: {id}</Text>
+      <View
+        style={{
+          flex: 1,
+          borderRadius: 16,
+          overflow: 'hidden',
+        }}>
+        <WebView source={{ uri: googleSearchUrl }} />
+      </View>
     </View>
   );
 }

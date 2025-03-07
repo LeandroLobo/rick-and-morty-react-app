@@ -30,6 +30,13 @@ export default function TabsLayout() {
           tabBarIcon: ({ color }) => <FontAwesome name="info" size={24} color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="otro"
+        options={{
+          title: 'Otro',
+          tabBarIcon: ({ color }) => <FontAwesome name="circle" size={24} color={color} />,
+        }}
+      />
     </Tabs>
   );
 }

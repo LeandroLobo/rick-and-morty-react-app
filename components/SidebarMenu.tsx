@@ -1,13 +1,14 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React, { useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Animated, FlatList } from 'react-native';
+import React, { useRef, useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Animated } from 'react-native';
 
-// Define la interfaz para los items del menú
 interface MenuItem {
   title: string;
-  path: string;
+  path?: string;
   icon: string;
+  disabled?: boolean;
+  children?: MenuItem[];
 }
 
 interface SidebarMenuProps {
@@ -18,10 +19,21 @@ interface SidebarMenuProps {
 const menuItems: MenuItem[] = [
   { title: 'Home', path: '/', icon: 'home' },
   { title: 'App Info', path: '/about', icon: 'info' },
-  { title: 'Page 1 titulo muy muy largo', path: '/page1', icon: 'file' },
-  { title: 'Page 2', path: '/page2', icon: 'book' },
-  { title: 'Page 3', path: '/page3', icon: 'trash' },
-  // Agrega más elementos aquí
+  {
+    title: 'Sección Anidada',
+    icon: 'folder',
+    children: [
+      { title: 'Otro', path: '/otro', icon: 'circle' },
+      {
+        title: 'Subsección',
+        icon: 'folder-open',
+        children: [
+          { title: 'Subsubitem 1', path: '/subsubitem1', icon: 'dot-circle-o', disabled: true },
+          { title: 'Subsubitem 2', path: '/subsubitem2', icon: 'dot-circle-o', disabled: true },
+        ],
+      },
+    ],
+  },
 ];
 
 export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
@@ -41,14 +53,39 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
     router.replace(path); // 📌 Navega con expo-router
   };
 
-  const renderItem = ({ item }: { item: MenuItem }) => (
-    <TouchableOpacity onPress={() => navigateTo(item.path)} className="mb-3 flex-row items-center">
-      <View className="w-6 items-center">
-        {/* Icono dinámico de FontAwesome */}
-        <FontAwesome name={item.icon as any} size={20} color="white" />
-      </View>
-      <Text className="ml-4 text-xl font-bold text-white">{item.title}</Text>
-    </TouchableOpacity>
+  const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({});
+
+  const toggleSection = (title: string) => {
+    setOpenSections((prev) => ({ ...prev, [title]: !prev[title] }));
+  };
+
+  const renderMenuItem = (item: MenuItem, level = 0) => (
+    <View key={item.title} className={`ml-${level * 4}`}>
+      {/* Botón principal */}
+      <TouchableOpacity
+        onPress={() =>
+          item.children
+            ? toggleSection(item.title)
+            : item.disabled
+              ? () => {}
+              : navigateTo(item.path!)
+        }
+        className="mb-3 flex-row items-center">
+        <View className="w-6 items-center">
+          <FontAwesome name={item.icon as any} size={20 - level * 2} color="white" />
+        </View>
+        <Text className={`ml-4 text-${level === 0 ? 'xl' : level === 1 ? 'lg' : 'md'} text-white`}>
+          {item.title}
+        </Text>
+      </TouchableOpacity>
+
+      {/* Renderizar hijos si existen y están abiertos */}
+      {item.children && openSections[item.title] && (
+        <View className="ml-4">
+          {item.children.map((child) => renderMenuItem(child, level + 1))}
+        </View>
+      )}
+    </View>
   );
 
   return (
@@ -58,13 +95,7 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
         className="h-full w-72 bg-orange-500 p-5 shadow-lg">
         <Text className="mb-4 text-3xl font-bold text-white">Pages List</Text>
 
-        {/* FlatList para manejo eficiente de una lista larga */}
-        <FlatList
-          data={menuItems}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.path}
-          className="flex-1"
-        />
+        <View>{menuItems.map((item) => renderMenuItem(item))}</View>
       </Animated.View>
 
       {isOpen && <TouchableOpacity onPress={onClose} className="flex-1" activeOpacity={1} />}

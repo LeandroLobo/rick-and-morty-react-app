@@ -36,7 +36,7 @@ export function Main() {
   }, [debouncedSearch, page]);
 
   return (
-    <View>
+    <View className="flex-1">
       <TextInput
         placeholder="Search character"
         className="ml-4 mr-4 mt-4 rounded-lg border-2 pl-2"

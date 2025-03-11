@@ -24,17 +24,17 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="historia"
+        options={{
+          title: 'Historia',
+          tabBarIcon: ({ color }) => <FontAwesome name="list-alt" size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="about"
         options={{
           title: 'App Info',
           tabBarIcon: ({ color }) => <FontAwesome name="info" size={24} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="otro"
-        options={{
-          title: 'Otro',
-          tabBarIcon: ({ color }) => <FontAwesome name="circle" size={24} color={color} />,
         }}
       />
     </Tabs>

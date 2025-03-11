@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "rick-and-morty-wiki",
     "slug": "rick-and-morty-wiki",
+    "name": "Rick and Morty Wiki",
     "version": "1.0.0",
     "web": {
       "favicon": "./assets/favicon.png"
@@ -16,7 +16,7 @@
     "splash": {
       "image": "./assets/rick-and-morty-splash.jpg",
       "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -24,10 +24,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/ricksanchez.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.rickandmortywiki"
-    }
+      "package": "com.lobodev.rickandmortywiki"
+    },
+    "scheme": "rickandmortywiki"
   }
 }

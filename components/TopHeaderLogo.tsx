@@ -1,6 +1,6 @@
 import { View, Image } from 'react-native';
 
-import favicon from '../assets/favicon.png';
+import favicon from '../assets/ricksanchez.png';
 
 export function TopHeaderLogo() {
   return (

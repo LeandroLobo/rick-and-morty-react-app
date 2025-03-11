@@ -22,23 +22,40 @@ export interface Episode {
   url: string;
   created: string;
 }
-//"https://rickandmortyapi.com/api/episode/1"
-export async function getCharacters(id?: number): Promise<Character[]> {
-  const response = await fetch(characters + (id ? `/${id}` : ''));
-  const data = await response.json();
-  return data.results.map((character: any): Character => {
-    const episodeNumber = character.episode[0].split('/').pop() || '';
-    return {
-      id: character.id,
-      name: character.name,
-      status: character.status,
-      species: character.species,
-      gender: character.gender,
-      image: character.image,
-      episodeNumber,
-      episode: character.episode,
-    };
-  });
+
+export async function getCharacters(
+  name?: string,
+  page: number = 1
+): Promise<{ characters: Character[]; totalPages: number; count: number }> {
+  const url = `https://rickandmortyapi.com/api/character/?page=${page}${name ? `&name=${encodeURIComponent(name)}` : ''}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Error al obtener los personajes');
+
+    const data = await response.json();
+
+    // Convertimos los datos a nuestro formato `Character`
+    const characters: Character[] = data.results.map((character: any): Character => {
+      const episodeNumber = character.episode[0]?.split('/').pop() || '';
+
+      return {
+        id: character.id,
+        name: character.name,
+        status: character.status,
+        species: character.species,
+        gender: character.gender,
+        image: character.image,
+        episodeNumber,
+        episode: character.episode,
+      };
+    });
+
+    return { characters, totalPages: data.info.pages, count: data.info.count };
+  } catch (error) {
+    console.log('XXXXXXXXXXX:', error);
+    return { characters: [], totalPages: 0, count: 0 };
+  }
 }
 
 export async function getLocations(name: string | null = null): Promise<any[]> {

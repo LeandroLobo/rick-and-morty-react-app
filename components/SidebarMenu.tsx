@@ -1,7 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useRef, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, Animated, Alert, BackHandler } from 'react-native';
 
 interface MenuItem {
   title: string;
@@ -18,21 +18,11 @@ interface SidebarMenuProps {
 
 const menuItems: MenuItem[] = [
   { title: 'Home', path: '/', icon: 'home' },
-  { title: 'App Info', path: '/about', icon: 'info' },
+  { title: 'Historia', path: '/historia', icon: 'list-alt' },
   {
     title: 'Sección Anidada',
     icon: 'folder',
-    children: [
-      { title: 'Otro', path: '/otro', icon: 'circle' },
-      {
-        title: 'Subsección',
-        icon: 'folder-open',
-        children: [
-          { title: 'Subsubitem 1', path: '/subsubitem1', icon: 'dot-circle-o', disabled: true },
-          { title: 'Subsubitem 2', path: '/subsubitem2', icon: 'dot-circle-o', disabled: true },
-        ],
-      },
-    ],
+    children: [{ title: 'Acerca de la App', path: '/about', icon: 'info' }],
   },
 ];
 
@@ -57,6 +47,13 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
 
   const toggleSection = (title: string) => {
     setOpenSections((prev) => ({ ...prev, [title]: !prev[title] }));
+  };
+
+  const handleExit = () => {
+    Alert.alert('Salir de la aplicación', '¿Estás seguro de que quieres salir?', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Salir', onPress: () => BackHandler.exitApp() },
+    ]);
   };
 
   const renderMenuItem = (item: MenuItem, level = 0) => (
@@ -93,9 +90,16 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
       <Animated.View
         style={{ transform: [{ translateX: slideAnim }] }}
         className="h-full w-72 bg-orange-500 p-5 shadow-lg">
-        <Text className="mb-4 text-3xl font-bold text-white">Pages List</Text>
+        <Text className="mb-4 text-3xl font-bold text-white">Menu</Text>
 
         <View>{menuItems.map((item) => renderMenuItem(item))}</View>
+
+        <TouchableOpacity onPress={handleExit} className="absolute bottom-6 right-6">
+          <View className="flex-row items-center gap-4">
+            <FontAwesome name="sign-out" size={24} color="white" />
+            <Text className="text-xl font-bold text-white">Salir</Text>
+          </View>
+        </TouchableOpacity>
       </Animated.View>
 
       {isOpen && <TouchableOpacity onPress={onClose} className="flex-1" activeOpacity={1} />}

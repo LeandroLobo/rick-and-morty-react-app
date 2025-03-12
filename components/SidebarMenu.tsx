@@ -1,5 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useFavorites } from 'lib/favoritesContext';
 import React, { useRef, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Animated, Alert, BackHandler } from 'react-native';
 
@@ -16,19 +17,45 @@ interface SidebarMenuProps {
   onClose: () => void;
 }
 
-const menuItems: MenuItem[] = [
-  { title: 'Home', path: '/', icon: 'home' },
-  { title: 'Historia', path: '/historia', icon: 'list-alt' },
-  {
-    title: 'Sección Anidada',
-    icon: 'folder',
-    children: [{ title: 'Acerca de la App', path: '/about', icon: 'info' }],
-  },
-];
-
 export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
   const router = useRouter(); // 🛠️ Hook de navegación de expo-router
   const slideAnim = useRef(new Animated.Value(-250)).current;
+
+  const { favorites } = useFavorites();
+
+  const getFavoritesMenuItem = (): MenuItem => {
+    const favoritesMenu: MenuItem = {
+      title: 'Personajes Favoritos',
+      icon: 'heart',
+      children: favorites.map((char) => ({
+        title: char.name,
+        path: `/character/${char.id}`,
+        icon: 'user',
+        disabled: false,
+      })),
+    };
+
+    // Si no hay favoritos, mostrar un mensaje
+    if (favorites.length === 0) {
+      favoritesMenu.children = [
+        {
+          title: 'No hay favoritos',
+          icon: 'info-circle',
+          disabled: true,
+        },
+      ];
+    }
+
+    return favoritesMenu;
+  };
+
+  // Crear menú dinámico combinando los estáticos con los favoritos
+  const dynamicMenuItems: MenuItem[] = [
+    { title: 'Personajes', path: '/', icon: 'list-ul' },
+    { title: 'Historia', path: '/historia', icon: 'book' },
+    { title: 'Acerca de la App', path: '/about', icon: 'info' },
+    getFavoritesMenuItem(),
+  ];
 
   useEffect(() => {
     Animated.timing(slideAnim, {
@@ -92,7 +119,7 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
         className="h-full w-72 bg-orange-500 p-5 shadow-lg">
         <Text className="mb-4 text-3xl font-bold text-white">Menu</Text>
 
-        <View>{menuItems.map((item) => renderMenuItem(item))}</View>
+        <View>{dynamicMenuItems.map((item) => renderMenuItem(item))}</View>
 
         <TouchableOpacity onPress={handleExit} className="absolute bottom-6 right-6">
           <View className="flex-row items-center gap-4">

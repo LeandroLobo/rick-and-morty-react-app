@@ -7,7 +7,7 @@ export default function TabsLayout() {
       screenOptions={{
         headerShown: false,
         tabBarPosition: 'top',
-        tabBarActiveTintColor: 'white',
+        tabBarActiveTintColor: '#fff7ed',
         tabBarInactiveTintColor: 'black',
         tabBarLabelStyle: {
           fontSize: 10,
@@ -19,15 +19,15 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <FontAwesome name="home" size={24} color={color} />,
+          title: 'Personajes',
+          tabBarIcon: ({ color }) => <FontAwesome name="list-ul" size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="historia"
         options={{
           title: 'Historia',
-          tabBarIcon: ({ color }) => <FontAwesome name="list-alt" size={24} color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome name="book" size={24} color={color} />,
         }}
       />
       <Tabs.Screen

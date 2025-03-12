@@ -1,7 +1,9 @@
+import { FontAwesome } from '@expo/vector-icons';
 import { Link } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
-import { Text, View, Image, Animated, Pressable } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, Image, Pressable, TouchableOpacity } from 'react-native';
 
+import { useFavorites } from '../lib/favoritesContext';
 import { Character, Episode } from '../lib/rickAndMortyAPI';
 
 interface CharacterCardProps {
@@ -47,69 +49,68 @@ export function CharacterCard({ character }: CharacterCardProps) {
     }
   }, [character.episode]);
 
+  const { isFavorite, addFavorite, removeFavorite } = useFavorites();
+
+  const handleFavoritePress = async () => {
+    if (isFavorite(character.id)) {
+      await removeFavorite(character.id);
+    } else {
+      await addFavorite(character);
+    }
+  };
+
   return (
-    <Link
-      asChild
-      href={{
-        pathname: '/character/[...character]',
-        params: { id: character.id, name: character.name },
-      }}>
-      <Pressable className="active:opacity-50" onPress={() => {}}>
-        <View className="m-4 max-w-full flex-row rounded-xl bg-white p-4">
-          <Image source={{ uri: character.image }} className="h-28 w-28 rounded-full" />
-          <View className="ml-4 flex-1 flex-col">
-            <View className="w-full">
-              <Text className="overflow-hidden whitespace-normal break-words text-2xl">
-                {character.name}
-              </Text>
-            </View>
-            <View className="flex-1 flex-row">
-              <View className="w-1/2">
-                <Text className="overflow-hidden whitespace-normal break-words text-lg font-light">
-                  {character.species}
-                </Text>
-                <Text
-                  className={`overflow-hidden whitespace-normal break-words font-bold ${getGenderColors()}`}>
-                  {character.gender}
-                </Text>
-                <Text
-                  className={`overflow-hidden whitespace-normal break-words font-bold ${getStatusColors()}`}>
-                  {character.status}
+    <View className="relative">
+      <TouchableOpacity
+        className="absolute right-6 top-6 z-10"
+        hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+        onPress={handleFavoritePress}>
+        <FontAwesome
+          name={isFavorite(character.id) ? 'heart' : 'heart-o'}
+          size={24}
+          color={isFavorite(character.id) ? 'red' : 'black'}
+        />
+      </TouchableOpacity>
+
+      <Link
+        asChild
+        href={{
+          pathname: '/character/search/[...characterGoogleSearch]',
+          params: { image: character.image, name: character.name },
+        }}>
+        <Pressable className="flex-1 active:opacity-50" onPress={() => {}}>
+          <View className="m-4 max-w-full flex-row rounded-xl bg-orange-200 p-4">
+            <Image source={{ uri: character.image }} className="h-28 w-28 rounded-full" />
+            <View className="ml-4 flex-1 flex-col">
+              <View className="w-full">
+                <Text className="overflow-hidden whitespace-normal break-words text-2xl">
+                  {character.name}
                 </Text>
               </View>
-              <View className="flex w-1/2 justify-center">
-                <Text className="font-light">First appearance</Text>
-                <Text className="font-bold">Episode №{character.episodeNumber}</Text>
-                <Text className="text-gray-600">{episode?.name}</Text>
+              <View className="flex-1 flex-row">
+                <View className="w-1/2">
+                  <Text className="overflow-hidden whitespace-normal break-words text-lg font-light">
+                    {character.species}
+                  </Text>
+                  <Text
+                    className={`overflow-hidden whitespace-normal break-words font-bold ${getGenderColors()}`}>
+                    {character.gender}
+                  </Text>
+                  <Text
+                    className={`overflow-hidden whitespace-normal break-words font-bold ${getStatusColors()}`}>
+                    {character.status}
+                  </Text>
+                </View>
+                <View className="flex w-1/2 justify-center">
+                  <Text className="font-light">First appearance</Text>
+                  <Text className="font-bold">Episode №{character.episodeNumber}</Text>
+                  <Text className="text-gray-600">{episode?.name}</Text>
+                </View>
               </View>
             </View>
           </View>
-        </View>
-      </Pressable>
-    </Link>
-  );
-}
-
-interface AnimatedCharacterCardProps {
-  character: Character;
-  index: number;
-}
-
-export function AnimatedCharacterCard({ character, index }: AnimatedCharacterCardProps) {
-  const opacity = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.timing(opacity, {
-      toValue: 1,
-      duration: 300,
-      delay: index * 500,
-      useNativeDriver: true,
-    }).start();
-  }, [opacity, index]);
-
-  return (
-    <Animated.View style={{ opacity }}>
-      <CharacterCard character={character} />
-    </Animated.View>
+        </Pressable>
+      </Link>
+    </View>
   );
 }

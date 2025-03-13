@@ -80,7 +80,7 @@ export async function getCharacters(
 
           // Crear un mapa para buscar episodios por ID más eficientemente
           const episodesMap = episodesData.reduce(
-            (map: { [key: number]: { id: number; name: string; episode: string } }, ep) => {
+            (map: { [key: number]: { id: number; name: string; episode: string } }, ep: any) => {
               map[ep.id] = {
                 id: ep.id,
                 name: ep.name,

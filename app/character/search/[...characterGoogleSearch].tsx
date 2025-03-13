@@ -47,7 +47,7 @@ function CharacterImage({ image }: { image: string }) {
   return (
     <View className="flex-row items-center">
       <TouchableOpacity
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
         onPress={() => router.back()}
         className="mr-4 flex-row items-center">
         <FontAwesome name="arrow-left" size={20} color="black" />

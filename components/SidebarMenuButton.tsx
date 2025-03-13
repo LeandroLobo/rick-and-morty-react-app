@@ -11,7 +11,7 @@ export default function SidebarMenuButton({ setMenuOpen }: SidebarMenuButtonProp
       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       onPress={() => setMenuOpen(true)}
       className="flex-row items-center justify-center">
-      <FontAwesome name="gears" size={24} color="black" />
+      <FontAwesome name="gears" size={32} color="black" />
     </TouchableOpacity>
   );
 }

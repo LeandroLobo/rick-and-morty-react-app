@@ -80,13 +80,13 @@ export default function CharacterGoogleSearch() {
         <View className="absolute bottom-4 right-4 flex-row">
           <TouchableOpacity
             onPress={() => webViewRef.current?.goBack()}
-            className="mr-4 h-12 w-12 items-center justify-center rounded-full bg-orange-500">
-            <FontAwesome name="arrow-left" size={20} color="white" />
+            className="mr-4 h-12 w-12 items-center justify-center rounded-full bg-black">
+            <FontAwesome name="arrow-left" size={20} color="#f97316" />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => webViewRef.current?.reload()}
-            className="h-12 w-12 items-center justify-center rounded-full bg-orange-500">
-            <FontAwesome name="refresh" size={20} color="white" />
+            className="h-12 w-12 items-center justify-center rounded-full bg-black">
+            <FontAwesome name="refresh" size={20} color="#f97316" />
           </TouchableOpacity>
         </View>
       </View>

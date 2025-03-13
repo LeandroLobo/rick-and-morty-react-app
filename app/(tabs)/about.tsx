@@ -54,6 +54,14 @@ export default function About() {
           Toca cualquier tarjeta de personaje para ver información detallada, incluyendo su primera
           aparición y resultados de búsqueda online.
         </Text>
+
+        <Text className="mb-1 text-lg font-bold">• Navegador integrado de Google</Text>
+        <Text className="mb-4 text-base">
+          Explora información detallada sobre cada personaje a través de un navegador integrado que
+          muestra resultados de Google. Este navegador está configurado específicamente para
+          mantenerte dentro del ecosistema de Google, permitiéndote explorar a fondo sin salir de la
+          aplicación ni perder contexto.
+        </Text>
       </View>
 
       <Text className="mb-4 px-8 text-xl font-bold text-orange-600">Cómo usar la aplicación</Text>
@@ -79,8 +87,11 @@ export default function About() {
 
         <Text className="mb-1 text-lg font-bold">4. Ver detalles y buscar información</Text>
         <Text className="mb-4 text-base">
-          Toca cualquier tarjeta para ver más información y resultados de búsqueda online sobre ese
-          personaje.
+          Toca cualquier tarjeta para ver información detallada sobre el personaje. Desde allí,
+          puedes acceder al navegador integrado que te permite explorar resultados de Google sobre
+          ese personaje. El navegador está configurado para permitirte navegar dentro de Google
+          (búsquedas, imágenes, etc.) pero con restricciones que evitan que salgas a otros sitios
+          web, manteniendo una experiencia segura y enfocada en la información del personaje.
         </Text>
       </View>
 

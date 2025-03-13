@@ -1,18 +1,15 @@
-import { FontAwesome } from '@expo/vector-icons';
 import { Link } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { Text, View, Image, Pressable, TouchableOpacity } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Text, View, Image, Pressable, Animated } from 'react-native';
 
-import { useFavorites } from '../lib/favoritesContext';
-import { Character, Episode } from '../lib/rickAndMortyAPI';
+import FavoriteButton from './FavoriteButton';
+import { Character } from '../lib/rickAndMortyAPI';
 
 interface CharacterCardProps {
   character: Character;
 }
 
 export function CharacterCard({ character }: CharacterCardProps) {
-  const [episode, setEpisode] = useState<Episode | null>(null);
-
   const getStatusColors = () => {
     switch (character.status) {
       case 'Alive':
@@ -37,40 +34,9 @@ export function CharacterCard({ character }: CharacterCardProps) {
     }
   };
 
-  const getEpisode = async (episodeUrl: string) => {
-    const response = await fetch(episodeUrl);
-    const data: Episode = await response.json();
-    return data;
-  };
-
-  useEffect(() => {
-    if (character.episode && character.episode.length > 0) {
-      getEpisode(character.episode[0]).then((data) => setEpisode(data));
-    }
-  }, [character.episode]);
-
-  const { isFavorite, addFavorite, removeFavorite } = useFavorites();
-
-  const handleFavoritePress = async () => {
-    if (isFavorite(character.id)) {
-      await removeFavorite(character.id);
-    } else {
-      await addFavorite(character);
-    }
-  };
-
   return (
     <View className="relative">
-      <TouchableOpacity
-        className="absolute right-6 top-6 z-10"
-        hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
-        onPress={handleFavoritePress}>
-        <FontAwesome
-          name={isFavorite(character.id) ? 'heart' : 'heart-o'}
-          size={24}
-          color={isFavorite(character.id) ? 'red' : 'black'}
-        />
-      </TouchableOpacity>
+      <FavoriteButton character={character} />
 
       <Link
         asChild
@@ -102,9 +68,15 @@ export function CharacterCard({ character }: CharacterCardProps) {
                   </Text>
                 </View>
                 <View className="flex w-1/2 justify-center">
-                  <Text className="font-light">First appearance</Text>
-                  <Text className="font-bold">Episode №{character.episodeNumber}</Text>
-                  <Text className="text-gray-600">{episode?.name}</Text>
+                  <Text className="font-light">Primer aparición</Text>
+                  <Text className="font-bold">
+                    {character.firstEpisode
+                      ? `Episodio №${character.firstEpisode.id}`
+                      : `Episodio №${character.episodeNumber}`}
+                  </Text>
+                  <Text numberOfLines={3} className="text-gray-600">
+                    {character.firstEpisode?.name || 'Unknown episode'}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -112,5 +84,43 @@ export function CharacterCard({ character }: CharacterCardProps) {
         </Pressable>
       </Link>
     </View>
+  );
+}
+
+interface AnimatedCharacterCardProps {
+  character: Character;
+  index: number;
+}
+
+// components/CharacterCard.tsx
+export function AnimatedCharacterCard({ character, index }: AnimatedCharacterCardProps) {
+  const opacity = useRef(new Animated.Value(0)).current;
+  const [renderKey] = useState(`char-${character.id}`); // Clave estable para re-renderizados
+
+  useEffect(() => {
+    // Limpia animaciones previas
+    opacity.setValue(0);
+
+    // Inicia la nueva animación
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 200,
+      delay: index * 200, // Limita el delay máximo a 1 segundo
+      useNativeDriver: true, // Importante para rendimiento
+    }).start();
+
+    return () => {
+      // Limpieza al desmontar
+      opacity.setValue(0);
+    };
+  }, [character.id, index]); // Dependencia en character.id para reiniciar la animación cuando cambia
+
+  return (
+    <Animated.View
+      style={{ opacity }}
+      key={renderKey} // Asegura que React trate cada elemento como único
+    >
+      <CharacterCard character={character} />
+    </Animated.View>
   );
 }

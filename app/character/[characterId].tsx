@@ -1,6 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
+import FavoriteButton from 'components/FavoriteButton';
 import { useLocalSearchParams, Stack, router } from 'expo-router';
-import { useFavorites } from 'lib/favoritesContext';
 import { useEffect, useState } from 'react';
 import { View, Text, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
 
@@ -11,7 +11,6 @@ export default function CharacterDetail() {
   const [character, setCharacter] = useState<Character | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const { isFavorite, addFavorite, removeFavorite } = useFavorites();
 
   useEffect(() => {
     const fetchCharacter = async () => {
@@ -51,14 +50,6 @@ export default function CharacterDetail() {
     );
   }
 
-  const handleFavoritePress = async () => {
-    if (isFavorite(character.id)) {
-      await removeFavorite(character.id);
-    } else {
-      await addFavorite(character);
-    }
-  };
-
   // Mostrar los detalles del personaje
   return (
     <View className="flex-1 bg-orange-50 p-4">
@@ -89,33 +80,31 @@ export default function CharacterDetail() {
         <Image source={{ uri: character.image }} className="h-64 w-64 rounded-lg" />
       </View>
       <View className="relative rounded-lg bg-orange-200 p-4">
-        <TouchableOpacity
-          className="absolute right-5 top-5 z-10"
-          onPress={handleFavoritePress}
-          hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}>
-          <View className="h-10 w-10 items-center justify-center rounded-full  bg-opacity-40">
-            <FontAwesome
-              name={isFavorite(character.id) ? 'heart' : 'heart-o'}
-              size={24}
-              color={isFavorite(character.id) ? 'red' : 'black'}
-            />
-          </View>
-        </TouchableOpacity>
+        <FavoriteButton character={character} size={30} />
         <Text className="mb-2 text-xl font-bold">Información</Text>
         <Text className="text-lg">
           Status: <Text className="font-bold">{character.status}</Text>
         </Text>
         <Text className="text-lg">
-          Species: <Text className="font-bold">{character.species}</Text>
+          Especie: <Text className="font-bold">{character.species}</Text>
         </Text>
         <Text className="text-lg">
-          Gender: <Text className="font-bold">{character.gender}</Text>
+          Género: <Text className="font-bold">{character.gender}</Text>
         </Text>
         <Text className="text-lg">
-          Origin: <Text className="font-bold">{character.origin?.name}</Text>
+          Origen: <Text className="font-bold">{character.origin?.name}</Text>
         </Text>
         <Text className="text-lg">
-          Location: <Text className="font-bold">{character.location?.name}</Text>
+          Ubicación: <Text className="font-bold">{character.location?.name}</Text>
+        </Text>
+        <Text className="mt-2 text-xl font-bold">Primer aparición</Text>
+        <Text className="text-lg font-bold">
+          {character.firstEpisode
+            ? `- Episodio №${character.firstEpisode.id}`
+            : `- Episodio №${character.episodeNumber}`}
+        </Text>
+        <Text className="text-xl text-orange-800">
+          - {character.firstEpisode?.name || 'Unknown episode'}
         </Text>
       </View>
     </View>

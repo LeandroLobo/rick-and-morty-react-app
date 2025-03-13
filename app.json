@@ -9,15 +9,10 @@
     "experiments": {
       "tsconfigPaths": true
     },
-    "plugins": ["expo-router"],
+    "plugins": ["expo-router", "expo-splash-screen"],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/rick-and-morty-splash.jpg",
-      "resizeMode": "cover",
-      "backgroundColor": "#000000"
-    },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
@@ -29,6 +24,17 @@
       },
       "package": "com.lobodev.rickandmortywiki"
     },
-    "scheme": "rickandmortywiki"
+    "scheme": "rickandmortywiki",
+    "splash": {
+      "image": "./assets/rick-and-morty-splash.jpg",
+      "resizeMode": "cover",
+      "backgroundColor": "#000000",
+      "imageResizeMode": "cover",
+      "mdpi": "./assets/rick-and-morty-splash",
+      "hdpi": "./assets/rick-and-morty-splash",
+      "xhdpi": "./assets/rick-and-morty-splash",
+      "xxhdpi": "./assets/rick-and-morty-splash",
+      "xxxhdpi": "./assets/rick-and-morty-splash"
+    }
   }
 }

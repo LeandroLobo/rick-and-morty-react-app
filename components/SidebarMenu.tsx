@@ -2,7 +2,15 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useFavorites } from 'lib/favoritesContext';
 import React, { useRef, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Animated, Alert, BackHandler } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Animated,
+  Alert,
+  BackHandler,
+  ScrollView,
+} from 'react-native';
 
 interface MenuItem {
   title: string;
@@ -30,7 +38,7 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
       children: favorites.map((char) => ({
         title: char.name,
         path: `/character/${char.id}`,
-        icon: 'user',
+        icon: 'caret-right',
         disabled: false,
       })),
     };
@@ -96,9 +104,9 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
         }
         className="mb-3 flex-row items-center">
         <View className="w-6 items-center">
-          <FontAwesome name={item.icon as any} size={20 - level * 2} color="white" />
+          <FontAwesome name={item.icon as any} size={20 - level * 2} color="#f97316" />
         </View>
-        <Text className={`ml-4 text-${level === 0 ? 'xl' : level === 1 ? 'lg' : 'md'} text-white`}>
+        <Text className={`ml-4 text-${level === 0 ? 'xl' : level === 1 ? 'lg' : 'md'} text-black`}>
           {item.title}
         </Text>
       </TouchableOpacity>
@@ -116,17 +124,23 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
     <View className="absolute left-0 top-0 h-full w-full flex-row">
       <Animated.View
         style={{ transform: [{ translateX: slideAnim }] }}
-        className="h-full w-72 bg-orange-500 p-5 shadow-lg">
-        <Text className="mb-4 text-3xl font-bold text-white">Menu</Text>
+        className="h-full w-72 bg-orange-200 p-5 shadow-lg">
+        <Text className="mb-4 text-3xl font-bold text-black">Menu</Text>
 
-        <View>{dynamicMenuItems.map((item) => renderMenuItem(item))}</View>
+        {/* Envolvemos el contenido del menú en un ScrollView */}
+        <ScrollView className="flex-1 px-2">
+          <View>{dynamicMenuItems.map((item) => renderMenuItem(item))}</View>
+          {/* Añadimos espacio en la parte inferior para el botón de salir */}
+          <View style={{ height: 80 }} />
+        </ScrollView>
 
-        <TouchableOpacity onPress={handleExit} className="absolute bottom-6 right-6">
-          <View className="flex-row items-center gap-4">
-            <FontAwesome name="sign-out" size={24} color="white" />
-            <Text className="text-xl font-bold text-white">Salir</Text>
-          </View>
-        </TouchableOpacity>
+        {/* El botón de salir permanece fijo en la parte inferior */}
+        <View className="absolute bottom-0 left-0 right-0 bg-orange-300 px-5 py-4">
+          <TouchableOpacity onPress={handleExit} className="flex-row items-center justify-end">
+            <FontAwesome name="sign-out" size={31} color="#000" />
+            <Text className="ml-4 text-2xl font-bold text-black">Salir de la App</Text>
+          </TouchableOpacity>
+        </View>
       </Animated.View>
 
       {isOpen && <TouchableOpacity onPress={onClose} className="flex-1" activeOpacity={1} />}

@@ -23,9 +23,66 @@ export default function About() {
       </Text>
 
       <Text className="mb-4 px-8 text-lg">
-        Los usuarios pueden buscar personajes, ver detalles sobre ellos, y explorar información
-        relacionada con sus apariciones en la serie.
+        Los usuarios pueden buscar personajes, ver detalles sobre ellos, guardar favoritos, y
+        explorar información relacionada con sus apariciones en la serie.
       </Text>
+
+      <Text className="mb-4 px-8 text-xl font-bold text-orange-600">
+        Características principales
+      </Text>
+
+      <View className="mb-2 px-8">
+        <Text className="mb-1 text-lg font-bold">• Búsqueda de personajes</Text>
+        <Text className="mb-4 text-base">
+          Busca cualquier personaje de la serie por su nombre en la pestaña "Personajes"
+        </Text>
+
+        <Text className="mb-1 text-lg font-bold">• Sistema de favoritos</Text>
+        <Text className="mb-4 text-base">
+          Guarda tus personajes favoritos tocando el ícono de corazón en cada tarjeta. Los favoritos
+          se almacenan localmente en tu dispositivo.
+        </Text>
+
+        <Text className="mb-1 text-lg font-bold">• Menú lateral</Text>
+        <Text className="mb-4 text-base">
+          Accede al menú deslizante desde cualquier pantalla tocando el ícono de menú en la esquina
+          superior derecha. Aquí encontrarás accesos directos y tu lista de personajes favoritos.
+        </Text>
+
+        <Text className="mb-1 text-lg font-bold">• Detalles de personajes</Text>
+        <Text className="mb-4 text-base">
+          Toca cualquier tarjeta de personaje para ver información detallada, incluyendo su primera
+          aparición y resultados de búsqueda online.
+        </Text>
+      </View>
+
+      <Text className="mb-4 px-8 text-xl font-bold text-orange-600">Cómo usar la aplicación</Text>
+
+      <View className="mb-2 px-8">
+        <Text className="mb-1 text-lg font-bold">1. Navegar por personajes</Text>
+        <Text className="mb-4 text-base">
+          En la pantalla principal, usa el buscador y la paginación para encontrar personajes.
+        </Text>
+
+        <Text className="mb-1 text-lg font-bold">2. Guardar favoritos</Text>
+        <Text className="mb-4 text-base">
+          Toca el ícono de corazón en la esquina superior derecha de cualquier tarjeta para añadir o
+          quitar un personaje de tus favoritos.
+        </Text>
+
+        <Text className="mb-1 text-lg font-bold">3. Acceder al menú lateral</Text>
+        <Text className="mb-4 text-base">
+          Toca el ícono de menú (tres líneas) en la esquina superior derecha para abrir el menú
+          lateral. Aquí encontrarás una sección "Personajes Favoritos" con acceso rápido a todos tus
+          favoritos.
+        </Text>
+
+        <Text className="mb-1 text-lg font-bold">4. Ver detalles y buscar información</Text>
+        <Text className="mb-4 text-base">
+          Toca cualquier tarjeta para ver más información y resultados de búsqueda online sobre ese
+          personaje.
+        </Text>
+      </View>
 
       <Text className="mb-4 px-8 text-xl font-bold text-orange-600">Tecnologías utilizadas</Text>
 
@@ -48,6 +105,16 @@ export default function About() {
         <Text className="mb-1 text-lg font-bold">• NativeWind (Tailwind CSS)</Text>
         <Text className="mb-4 text-base">
           Herramienta para estilizar la interfaz usando clases de Tailwind
+        </Text>
+
+        <Text className="mb-1 text-lg font-bold">• AsyncStorage</Text>
+        <Text className="mb-4 text-base">
+          Almacenamiento local para guardar datos como los personajes favoritos
+        </Text>
+
+        <Text className="mb-1 text-lg font-bold">• Context API</Text>
+        <Text className="mb-4 text-base">
+          Para manejar el estado global de favoritos a través de la aplicación
         </Text>
 
         <Text className="mb-1 text-lg font-bold">• TypeScript</Text>

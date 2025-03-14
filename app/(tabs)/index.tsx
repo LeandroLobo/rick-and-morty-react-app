@@ -92,11 +92,11 @@ export default function Index() {
             renderItem={({ item, index }) => (
               <AnimatedCharacterCard character={item} index={index} />
             )}
-            // initialNumToRender={4} // Reduce el número inicial de elementos renderizados
-            // maxToRenderPerBatch={4} // Limita cuántos elementos se renderizan en cada lote
-            // windowSize={4} // Reduce el tamaño de la ventana para mejorar rendimiento
-            // removeClippedSubviews // Mejora rendimiento al quitar componentes fuera de pantalla
-            // contentContainerStyle={{ paddingBottom: 50 }} // Espacio extra al final
+            initialNumToRender={4} // Reduce el número inicial de elementos renderizados
+            maxToRenderPerBatch={4} // Limita cuántos elementos se renderizan en cada lote
+            windowSize={4} // Reduce el tamaño de la ventana para mejorar rendimiento
+            removeClippedSubviews // Mejora rendimiento al quitar componentes fuera de pantalla
+            contentContainerStyle={{ paddingBottom: 50 }} // Espacio extra al final
           />
         </>
       )}

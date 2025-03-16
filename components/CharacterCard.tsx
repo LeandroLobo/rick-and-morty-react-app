@@ -1,9 +1,9 @@
 import { Link } from 'expo-router';
-import React, { useEffect, useRef, useState, memo } from 'react';
+import { Character } from 'lib/services/RickAndMortyAPI';
+import React, { useEffect, useRef, memo } from 'react';
 import { Text, View, Image, Pressable, Animated } from 'react-native';
 
 import FavoriteButton from './FavoriteButton';
-import { Character } from '../lib/rickAndMortyAPI';
 
 interface CharacterCardProps {
   character: Character;
@@ -11,27 +11,27 @@ interface CharacterCardProps {
 
 // Usar memo para evitar re-renderizados innecesarios
 export const CharacterCard = memo(({ character }: CharacterCardProps) => {
-  const getStatusColors = () => {
+  const getStatusColor = () => {
     switch (character.status) {
       case 'Alive':
-        return 'text-green-500';
+        return 'text-status-alive dark:text-status-alive';
       case 'Dead':
-        return 'text-red-500';
+        return 'text-status-dead dark:text-status-dead';
       default:
-        return 'text-gray-500';
+        return 'text-status-unknown dark:text-status-unknown';
     }
   };
 
-  const getGenderColors = () => {
+  const getGenderColor = () => {
     switch (character.gender) {
       case 'Male':
-        return 'text-cyan-500';
+        return 'text-gender-male dark:text-gender-male';
       case 'Female':
-        return 'text-pink-500';
+        return 'text-gender-female dark:text-gender-female';
       case 'Genderless':
-        return 'text-purple-500';
+        return 'text-gender-genderless dark:text-gender-genderless';
       default:
-        return 'text-gray-500';
+        return 'text-gender-unknown dark:text-gender-unknown';
     }
   };
 
@@ -48,7 +48,7 @@ export const CharacterCard = memo(({ character }: CharacterCardProps) => {
         {/* Eliminado flex-1 para evitar conflictos de layout */}
         <Pressable className="active:opacity-50" onPress={() => {}}>
           {/* Usamos dimensiones más estables */}
-          <View className="m-4 rounded-xl bg-orange-200 p-4">
+          <View className="bg-rick-200 dark:bg-dark-card m-4 rounded-xl p-4">
             <View className="flex-row">
               {/* Dimensiones fijas para la imagen */}
               <Image
@@ -57,24 +57,30 @@ export const CharacterCard = memo(({ character }: CharacterCardProps) => {
               />
               <View className="ml-4 flex-1">
                 {/* Eliminada la anidación innecesaria */}
-                <Text numberOfLines={1} className="text-2xl font-bold">
+                <Text
+                  numberOfLines={1}
+                  className="dark:text-dark-text text-2xl font-bold text-black">
                   {character.name}
                 </Text>
 
                 <View className="mt-2 flex-row">
                   <View style={{ width: '50%' }}>
-                    <Text className="text-lg font-light">{character.species}</Text>
-                    <Text className={`font-bold ${getGenderColors()}`}>{character.gender}</Text>
-                    <Text className={`font-bold ${getStatusColors()}`}>{character.status}</Text>
+                    <Text className="dark:text-dark-text text-lg font-light text-black">
+                      {character.species}
+                    </Text>
+                    <Text className={`font-bold ${getGenderColor()}`}>{character.gender}</Text>
+                    <Text className={`font-bold ${getStatusColor()}`}>{character.status}</Text>
                   </View>
                   <View style={{ width: '50%' }}>
-                    <Text className="font-light">Primer aparición</Text>
-                    <Text className="font-bold">
+                    <Text className="dark:text-dark-text font-light text-black">
+                      Primer aparición
+                    </Text>
+                    <Text className="dark:text-dark-text font-bold text-black">
                       {character.firstEpisode
                         ? `Episodio №${character.firstEpisode.id}`
                         : `Episodio №${character.episodeNumber}`}
                     </Text>
-                    <Text numberOfLines={2} className="text-gray-600">
+                    <Text numberOfLines={2} className="text-gray-600 dark:text-gray-400">
                       {character.firstEpisode?.name || 'Unknown episode'}
                     </Text>
                   </View>

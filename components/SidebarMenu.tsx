@@ -1,6 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { useFavorites } from 'lib/favoritesContext';
+import { useFavorites } from 'lib/context/FavoritesContext';
+import { useTheme } from 'lib/context/ThemeContext'; // Importamos el contexto de tema
 import React, { useRef, useEffect, useState } from 'react';
 import {
   View,
@@ -26,10 +27,10 @@ interface SidebarMenuProps {
 }
 
 export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
-  const router = useRouter(); // 🛠️ Hook de navegación de expo-router
+  const router = useRouter();
   const slideAnim = useRef(new Animated.Value(-250)).current;
-
   const { favorites } = useFavorites();
+  const { theme, toggleTheme } = useTheme(); // Obtenemos el tema actual y la función para cambiarlo
 
   const getFavoritesMenuItem = (): MenuItem => {
     const favoritesMenu: MenuItem = {
@@ -75,7 +76,7 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
 
   const navigateTo = (path: string) => {
     onClose(); // Cierra el menú
-    router.replace(path); // 📌 Navega con expo-router
+    router.replace(path);
   };
 
   const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({});
@@ -104,9 +105,14 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
         }
         className="mb-3 flex-row items-center">
         <View className="w-6 items-center">
-          <FontAwesome name={item.icon as any} size={20 - level * 2} color="#f97316" />
+          <FontAwesome
+            name={item.icon as any}
+            size={20 - level * 2}
+            color={theme === 'dark' ? '#818cf8' : '#f97316'}
+          />
         </View>
-        <Text className={`ml-4 text-${level === 0 ? 'xl' : level === 1 ? 'lg' : 'md'} text-black`}>
+        <Text
+          className={`ml-4 text-${level === 0 ? 'xl' : level === 1 ? 'lg' : 'md'} dark:text-dark-text text-black`}>
           {item.title}
         </Text>
       </TouchableOpacity>
@@ -122,10 +128,34 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
 
   return (
     <View className="absolute left-0 top-0 h-full w-full flex-row">
+      {/* Primero colocamos el overlay que ocupa toda la pantalla */}
+      {isOpen && (
+        <TouchableOpacity
+          onPress={onClose}
+          className="absolute bottom-0 left-0 right-0 top-0 bg-black/50"
+          activeOpacity={1}
+        />
+      )}
       <Animated.View
-        style={{ transform: [{ translateX: slideAnim }] }}
-        className="h-full w-72 bg-orange-200 p-5 shadow-lg">
-        <Text className="mb-4 text-3xl font-bold text-black">Menu</Text>
+        style={{ transform: [{ translateX: slideAnim }], zIndex: 10 }}
+        className="bg-rick-200 dark:bg-dark-card h-full w-72 p-5 shadow-lg">
+        {/* Header con título y botón de toggle */}
+        <View className="mb-4 flex-row items-center justify-between">
+          <Text className="dark:text-dark-text text-3xl font-bold text-black">Menu</Text>
+
+          {/* Toggle de tema */}
+          <TouchableOpacity
+            hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
+            onPress={toggleTheme}
+            className="bg-rick-300 dark:bg-dark-accent h-10 w-10 items-center justify-center rounded-full"
+            activeOpacity={0.7}>
+            <FontAwesome
+              name={theme === 'dark' ? 'sun-o' : 'moon-o'}
+              size={20}
+              color={theme === 'dark' ? '#ffffff' : '#000000'}
+            />
+          </TouchableOpacity>
+        </View>
 
         {/* Envolvemos el contenido del menú en un ScrollView */}
         <ScrollView className="flex-1 px-2">
@@ -135,15 +165,19 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
         </ScrollView>
 
         {/* El botón de salir permanece fijo en la parte inferior */}
-        <View className="absolute bottom-0 left-0 right-0 bg-orange-300 px-5 py-4">
+        <View className="bg-rick-300 dark:bg-dark-accent absolute bottom-0 left-0 right-0 px-5 py-4">
           <TouchableOpacity onPress={handleExit} className="flex-row items-center justify-end">
-            <FontAwesome name="sign-out" size={31} color="#000" />
-            <Text className="ml-4 text-2xl font-bold text-black">Salir de la App</Text>
+            <FontAwesome
+              name="sign-out"
+              size={31}
+              color={theme === 'dark' ? '#ffffff' : '#000000'}
+            />
+            <Text className="dark:text-dark-text ml-4 text-2xl font-bold text-black">
+              Salir de la App
+            </Text>
           </TouchableOpacity>
         </View>
       </Animated.View>
-
-      {isOpen && <TouchableOpacity onPress={onClose} className="flex-1" activeOpacity={1} />}
     </View>
   );
 }

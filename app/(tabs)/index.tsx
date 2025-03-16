@@ -1,5 +1,6 @@
 import { AnimatedCharacterCard } from 'components/CharacterCard';
-import { Character, getCharacters } from 'lib/rickAndMortyAPI';
+import { useTheme } from 'lib/context/ThemeContext';
+import { Character, getCharacters } from 'lib/services/RickAndMortyAPI';
 import { useState, useEffect } from 'react';
 import { ActivityIndicator, View, FlatList, TextInput, Text, TouchableOpacity } from 'react-native';
 
@@ -11,6 +12,7 @@ export default function Index() {
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const { theme } = useTheme();
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -44,20 +46,23 @@ export default function Index() {
   }, [debouncedSearch, page]);
 
   return (
-    <View className="flex-1 bg-orange-50">
+    <View className="bg-rick-50 dark:bg-dark-background flex-1">
       <TextInput
         placeholder="Buscar Personaje"
-        className="mx-4 mt-3 rounded-lg border-2 pl-2 text-lg"
+        className="border-rick-300 dark:border-dark-accent dark:bg-dark-card dark:text-dark-text mx-4 mt-3 rounded-lg border-2 bg-white pl-2 text-lg text-black"
         value={search}
         onChangeText={setSearch}
+        placeholderTextColor={theme === 'dark' ? '#9ca3af' : '#9ca3af'}
       />
 
-      {loading && <ActivityIndicator size="large" color="orange" />}
+      {loading && (
+        <ActivityIndicator size="large" color={theme === 'dark' ? '#818cf8' : '#f97316'} />
+      )}
 
       {!loading && (
         <>
-          <View className="mx-4 mt-3 rounded-lg bg-orange-200 p-2">
-            <Text className="text-center text-orange-800">
+          <View className="bg-rick-200 dark:bg-dark-card mx-4 mt-3 rounded-lg p-2">
+            <Text className="text-rick-800 dark:text-dark-text text-center">
               {count === 0
                 ? 'No se encontraron personajes'
                 : count === 1
@@ -69,19 +74,27 @@ export default function Index() {
             <TouchableOpacity
               onPress={() => setPage((prev) => Math.max(prev - 1, 1))}
               disabled={page === 1}
-              className={`rounded-lg px-5 py-2 ${page === 1 ? 'bg-gray-400' : 'bg-orange-500 active:bg-orange-600'}`}
+              className={`rounded-lg px-5 py-2 ${
+                page === 1
+                  ? 'bg-gray-400 dark:bg-gray-600'
+                  : 'bg-rick dark:bg-dark-accent active:bg-rick-600 dark:active:bg-indigo-700'
+              }`}
               activeOpacity={0.7}>
               <Text className="font-semibold text-white">Anterior</Text>
             </TouchableOpacity>
 
-            <Text className="text-center">
+            <Text className="dark:text-dark-text text-center text-black">
               Página {totalPages === 0 ? 0 : page} de {totalPages}
             </Text>
 
             <TouchableOpacity
               onPress={() => setPage((prev) => (prev < totalPages ? prev + 1 : prev))}
               disabled={page >= totalPages}
-              className={`rounded-lg px-5 py-2 ${page >= totalPages ? 'bg-gray-400' : 'bg-orange-500 active:bg-orange-600'}`}
+              className={`rounded-lg px-5 py-2 ${
+                page >= totalPages
+                  ? 'bg-gray-400 dark:bg-gray-600'
+                  : 'bg-rick dark:bg-dark-accent active:bg-rick-600 dark:active:bg-indigo-700'
+              }`}
               activeOpacity={0.7}>
               <Text className="font-semibold text-white">Siguiente</Text>
             </TouchableOpacity>

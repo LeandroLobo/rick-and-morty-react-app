@@ -1,6 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { useFavorites } from 'lib/favoritesContext';
-import { Character } from 'lib/rickAndMortyAPI';
+import { useFavorites } from 'lib/context/FavoritesContext';
+import { Character } from 'lib/services/RickAndMortyAPI';
 import { TouchableOpacity } from 'react-native';
 
 export default function FavoriteButton({
@@ -23,7 +23,7 @@ export default function FavoriteButton({
   return (
     <TouchableOpacity
       className="absolute right-6 top-6 z-10"
-      hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       onPress={handleFavoritePress}>
       <FontAwesome
         name={isFavorite(character.id) ? 'heart' : 'heart-o'}

@@ -1,7 +1,8 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { useTheme } from 'lib/context/ThemeContext';
 import { useState, useRef } from 'react';
-import { View, Image, TouchableOpacity, Text, Alert, Platform } from 'react-native';
+import { View, Image, TouchableOpacity, Alert, Platform } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 export default function CharacterGoogleSearch() {
@@ -10,6 +11,7 @@ export default function CharacterGoogleSearch() {
   const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent('Rick and Morty Character: ' + name)}`;
   const [currentUrl, setCurrentUrl] = useState(googleSearchUrl);
   const webViewRef = useRef<WebView>(null);
+  const { theme } = useTheme();
 
   // Esta función determina si se debe cargar una URL
   const shouldStartLoadWithRequest = (request: any) => {
@@ -35,19 +37,20 @@ export default function CharacterGoogleSearch() {
       style={{
         flex: 1,
         padding: 16,
-        backgroundColor: '#f97316',
+        backgroundColor: theme === 'dark' ? '#1f2937' : '#f97316', // dark-background : rick
         overflow: 'hidden',
       }}>
       <Stack.Screen
         options={{
           headerStyle: {
-            backgroundColor: '#f97316',
+            backgroundColor: theme === 'dark' ? '#374151' : '#f97316', // dark-card : rick
           },
-          headerTintColor: 'black',
+          headerTintColor: theme === 'dark' ? '#f9fafb' : 'black', // dark-text : black
           headerTitleAlign: 'center',
           headerShadowVisible: true,
           headerTitleStyle: {
             fontSize: 22,
+            color: theme === 'dark' ? '#f9fafb' : 'black', // dark-text : black
           },
           headerTitle: String(name),
           headerLeft: () => <CharacterImage image={imageUrl} />,
@@ -58,6 +61,8 @@ export default function CharacterGoogleSearch() {
           flex: 1,
           borderRadius: 16,
           overflow: 'hidden',
+          borderWidth: 4,
+          borderColor: theme === 'dark' ? '#374151' : '#fed7aa', // dark-card : rick-200
         }}>
         <WebView
           ref={webViewRef}
@@ -76,17 +81,25 @@ export default function CharacterGoogleSearch() {
           }}
         />
 
-        {/* Opcionalmente, puedes agregar botones de navegación para el WebView */}
+        {/* Botones de navegación para el WebView */}
         <View className="absolute bottom-4 right-4 flex-row">
           <TouchableOpacity
             onPress={() => webViewRef.current?.goBack()}
-            className="mr-4 h-12 w-12 items-center justify-center rounded-full bg-black">
-            <FontAwesome name="arrow-left" size={20} color="#f97316" />
+            className="dark:bg-dark-accent mr-4 h-12 w-12 items-center justify-center rounded-full bg-black">
+            <FontAwesome
+              name="arrow-left"
+              size={20}
+              color={theme === 'dark' ? '#f9fafb' : '#f97316'}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => webViewRef.current?.reload()}
-            className="h-12 w-12 items-center justify-center rounded-full bg-black">
-            <FontAwesome name="refresh" size={20} color="#f97316" />
+            className="dark:bg-dark-accent h-12 w-12 items-center justify-center rounded-full bg-black">
+            <FontAwesome
+              name="refresh"
+              size={20}
+              color={theme === 'dark' ? '#f9fafb' : '#f97316'}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -95,13 +108,15 @@ export default function CharacterGoogleSearch() {
 }
 
 function CharacterImage({ image }: { image: string }) {
+  const { theme } = useTheme();
+
   return (
     <View className="flex-row items-center">
       <TouchableOpacity
         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
         onPress={() => router.back()}
         className="mr-4 flex-row items-center">
-        <FontAwesome name="arrow-left" size={20} color="black" />
+        <FontAwesome name="arrow-left" size={20} color={theme === 'dark' ? '#f9fafb' : 'black'} />
       </TouchableOpacity>
       <Image source={{ uri: image }} className="m-2 mr-4 h-16 w-16 rounded-full" />
     </View>

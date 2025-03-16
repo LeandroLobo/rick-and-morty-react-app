@@ -1,8 +1,7 @@
 // lib/FavoritesContext.tsx
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { createContext, useState, useEffect, useContext } from 'react';
-
-import { Character } from './rickAndMortyAPI';
+import { Character } from 'lib/services/RickAndMortyAPI';
+import React, { useState, useEffect, useContext, createContext } from 'react';
 
 interface FavoritesContextType {
   favorites: Character[];

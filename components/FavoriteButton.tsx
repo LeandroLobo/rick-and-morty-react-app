@@ -1,5 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useFavorites } from 'lib/context/FavoritesContext';
+import { useTheme } from 'lib/context/ThemeContext';
 import { Character } from 'lib/services/RickAndMortyAPI';
 import { TouchableOpacity } from 'react-native';
 
@@ -11,6 +12,7 @@ export default function FavoriteButton({
   size?: number;
 }) {
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
+  const { theme } = useTheme();
 
   const handleFavoritePress = async () => {
     if (isFavorite(character.id)) {
@@ -28,7 +30,13 @@ export default function FavoriteButton({
       <FontAwesome
         name={isFavorite(character.id) ? 'heart' : 'heart-o'}
         size={size}
-        color={isFavorite(character.id) ? 'red' : 'black'}
+        color={
+          isFavorite(character.id)
+            ? 'red'
+            : theme === 'dark'
+              ? '#ffffff'
+              : '#000000'
+        }
       />
     </TouchableOpacity>
   );

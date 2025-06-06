@@ -93,7 +93,7 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
   };
 
   const renderMenuItem = (item: MenuItem, level = 0) => (
-    <View key={item.title} className={`ml-${level * 4}`}>
+    <View key={item.path ?? item.title} className={`ml-${level * 4}`}>
       {/* Botón principal */}
       <TouchableOpacity
         onPress={() =>

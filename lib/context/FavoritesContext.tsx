@@ -1,4 +1,4 @@
-// lib/FavoritesContext.tsx
+// lib/context/FavoritesContext.tsx
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Character } from 'lib/services/RickAndMortyAPI';
 import React, { useState, useEffect, useContext, createContext } from 'react';

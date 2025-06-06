@@ -29,7 +29,6 @@
       "image": "./assets/rick-and-morty-splash.jpg",
       "resizeMode": "cover",
       "backgroundColor": "#000000",
-      "imageResizeMode": "cover",
       "mdpi": "./assets/rick-and-morty-splash",
       "hdpi": "./assets/rick-and-morty-splash",
       "xhdpi": "./assets/rick-and-morty-splash",

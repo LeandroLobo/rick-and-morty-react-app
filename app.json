@@ -9,15 +9,21 @@
     "experiments": {
       "tsconfigPaths": true
     },
-    "plugins": ["expo-router", "expo-splash-screen"],
+    "plugins": [
+      "expo-router",
+      "expo-splash-screen"
+    ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/ricksanchez.png",
         "backgroundColor": "#ffffff"
@@ -34,6 +40,14 @@
       "xhdpi": "./assets/rick-and-morty-splash",
       "xxhdpi": "./assets/rick-and-morty-splash",
       "xxxhdpi": "./assets/rick-and-morty-splash"
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "174f0a1a-31fc-4686-9b78-0ed8be2f6bcd"
+      }
     }
   }
 }

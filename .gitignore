@@ -23,4 +23,6 @@ android
 .metro-health-check*
 
 # Private local workspace for notes, APKs, tutorials, and other scratch files
-.workspace/
+.workspace/apks/
+.workspace/notes/
+.workspace/references/

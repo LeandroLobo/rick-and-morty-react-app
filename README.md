@@ -121,17 +121,6 @@ npm run lint
 npm run format
 ```
 
-## Project Notes
-
-This repository includes a local private workspace folder, `.workspace/`, used to keep:
-
-- project context
-- personal notes
-- APK files
-- references and work-in-progress material
-
-That folder is ignored by Git and is not intended to be part of the app itself.
-
 ## Roadmap Direction
 
 Planned and exploratory directions include:
@@ -146,4 +135,3 @@ Planned and exploratory directions include:
 ## Disclaimer
 
 This is a fan project inspired by Rick and Morty and is intended for learning, experimentation, and portfolio development.
-
